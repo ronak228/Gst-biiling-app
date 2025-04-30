@@ -11,6 +11,7 @@ class BillingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey[50],
       body: Column(
         children: [
           _CustomerDetailsCard(),
@@ -166,18 +167,30 @@ class _CustomerDetailsCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      elevation: 0,
+      color: Colors.white,
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              'Customer Details',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                letterSpacing: 0.5,
-              ),
+            Row(
+              children: [
+                Icon(
+                  Icons.person_outline,
+                  color: Theme.of(context).primaryColor,
+                  size: 24,
+                ),
+                const SizedBox(width: 8),
+                const Text(
+                  'Customer Details',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    letterSpacing: 0.5,
+                  ),
+                ),
+              ],
             ),
             const SizedBox(height: 16),
             Consumer<BillingProvider>(
@@ -223,158 +236,159 @@ class _BillItemsList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: Consumer<BillingProvider>(
-        builder: (context, provider, child) {
-          if (provider.currentBillItems.isEmpty) {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.shopping_cart_outlined,
-                    size: 64,
-                    color: Colors.grey[400],
-                  ),
-                  const SizedBox(height: 16),
-                  Text(
-                    'No items in bill',
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.grey[600],
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    'Add items using the + button below',
-                    style: TextStyle(
-                      fontSize: 14,
-                      color: Colors.grey[500],
-                    ),
-                  ),
-                ],
-              ),
-            );
-          }
-
-          return ListView.builder(
-            itemCount: provider.currentBillItems.length,
-            padding: const EdgeInsets.symmetric(vertical: 8),
-            itemBuilder: (context, index) {
-              final item = provider.currentBillItems[index];
-              return Slidable(
-                endActionPane: ActionPane(
-                  motion: const ScrollMotion(),
+      child: Container(
+        color: Colors.grey[50],
+        child: Consumer<BillingProvider>(
+          builder: (context, provider, child) {
+            if (provider.currentBillItems.isEmpty) {
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    SlidableAction(
-                      onPressed: (_) => provider.removeItemFromBill(index),
-                      backgroundColor: Colors.red[700]!,
-                      foregroundColor: Colors.white,
-                      icon: Icons.delete_outline,
-                      label: 'Delete',
-                      borderRadius: const BorderRadius.horizontal(
-                        right: Radius.circular(12),
+                    Icon(
+                      Icons.shopping_cart_outlined,
+                      size: 64,
+                      color: Theme.of(context).primaryColor.withOpacity(0.5),
+                    ),
+                    const SizedBox(height: 16),
+                    Text(
+                      'No items in bill',
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Colors.grey[800],
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      'Add items using the + button below',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.grey[600],
                       ),
                     ),
                   ],
                 ),
-                child: Card(
-                  child: ListTile(
-                    contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 8,
-                    ),
-                    title: Text(
-                      item.product.name,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
+              );
+            }
+
+            return ListView.builder(
+              itemCount: provider.currentBillItems.length,
+              padding: const EdgeInsets.symmetric(vertical: 8),
+              itemBuilder: (context, index) {
+                final item = provider.currentBillItems[index];
+                return Slidable(
+                  endActionPane: ActionPane(
+                    motion: const ScrollMotion(),
+                    children: [
+                      SlidableAction(
+                        onPressed: (_) => provider.removeItemFromBill(index),
+                        backgroundColor: Colors.red[400]!,
+                        foregroundColor: Colors.white,
+                        icon: Icons.delete_outline,
+                        label: 'Delete',
+                        borderRadius: const BorderRadius.horizontal(
+                          right: Radius.circular(12),
+                        ),
                       ),
-                    ),
-                    subtitle: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(height: 4),
-                        Row(
-                          children: [
-                            Text(
-                              'Qty: ${item.quantity} × ₹${item.product.price.toStringAsFixed(2)}',
-                              style: const TextStyle(
-                                fontSize: 14,
-                                color: Colors.black87,
-                              ),
-                            ),
-                            const SizedBox(width: 8),
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 6,
-                                vertical: 2,
-                              ),
-                              decoration: BoxDecoration(
-                                color: Theme.of(context)
-                                    .colorScheme
-                                    .primary
-                                    .withOpacity(0.1),
-                                borderRadius: BorderRadius.circular(4),
-                              ),
-                              child: Text(
-                                'GST ${item.product.gstPercentage}%',
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: Theme.of(context).colorScheme.primary,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          'CGST/SGST: ₹${item.totalCGST.toStringAsFixed(2)} each',
-                          style: TextStyle(
-                            fontSize: 12,
-                            color: Colors.grey[600],
-                          ),
-                        ),
-                      ],
-                    ),
-                    trailing: SizedBox(
-                      width: 100,
+                    ],
+                  ),
+                  child: Card(
+                    elevation: 0,
+                    color: Colors.white,
+                    child: Padding(
+                      padding: const EdgeInsets.all(12),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  item.product.name,
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                                const SizedBox(height: 4),
+                                Row(
+                                  children: [
+                                    Text(
+                                      'Qty: ${item.quantity} × ₹${item.product.price.toStringAsFixed(2)}',
+                                      style: const TextStyle(
+                                        fontSize: 14,
+                                        color: Colors.black87,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 8),
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 6,
+                                        vertical: 2,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: Theme.of(context)
+                                            .primaryColor
+                                            .withOpacity(0.1),
+                                        borderRadius: BorderRadius.circular(4),
+                                      ),
+                                      child: Text(
+                                        'GST ${item.product.gstPercentage}%',
+                                        style: TextStyle(
+                                          fontSize: 12,
+                                          color: Theme.of(context).primaryColor,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 4),
+                                Text(
+                                  'CGST/SGST: ₹${item.totalCGST.toStringAsFixed(2)} each',
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    color: Colors.grey[600],
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                           Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
                               Text(
                                 '₹${item.totalPrice.toStringAsFixed(2)}',
                                 style: TextStyle(
                                   fontWeight: FontWeight.bold,
-                                  color: Theme.of(context).colorScheme.primary,
-                                  fontSize: 15,
+                                  color: Theme.of(context).primaryColor,
+                                  fontSize: 16,
                                 ),
                               ),
                               IconButton(
-                                icon: const Icon(Icons.edit_outlined, size: 20),
+                                icon: Icon(
+                                  Icons.edit_outlined,
+                                  size: 20,
+                                  color: Theme.of(context).primaryColor,
+                                ),
                                 padding: EdgeInsets.zero,
                                 constraints: const BoxConstraints(),
                                 onPressed: () => _showEditQuantityDialog(
                                     context, index, item),
-                                color: Theme.of(context).colorScheme.secondary,
                               ),
                             ],
                           ),
                         ],
                       ),
                     ),
-                    dense: true,
                   ),
-                ),
-              );
-            },
-          );
-        },
+                );
+              },
+            );
+          },
+        ),
       ),
     );
   }
@@ -452,6 +466,8 @@ class _BillSummary extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      elevation: 0,
+      color: Colors.white,
       margin: const EdgeInsets.all(16),
       child: Padding(
         padding: const EdgeInsets.all(16),
@@ -463,8 +479,7 @@ class _BillSummary extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
-                    color:
-                        Theme.of(context).colorScheme.primary.withOpacity(0.05),
+                    color: Theme.of(context).primaryColor.withOpacity(0.05),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Column(
@@ -478,7 +493,7 @@ class _BillSummary extends StatelessWidget {
                         'Total Amount:',
                         provider.totalAmount,
                         style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                              color: Theme.of(context).colorScheme.primary,
+                              color: Theme.of(context).primaryColor,
                               fontWeight: FontWeight.bold,
                             ),
                       ),
@@ -497,6 +512,8 @@ class _BillSummary extends StatelessWidget {
                         style: ElevatedButton.styleFrom(
                           backgroundColor:
                               Theme.of(context).colorScheme.secondary,
+                          foregroundColor: Colors.white,
+                          elevation: 0,
                         ),
                       ),
                     ),
@@ -508,10 +525,10 @@ class _BillSummary extends StatelessWidget {
                             : () async {
                                 if (provider.customerName.isEmpty) {
                                   ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                      content:
-                                          Text('Please enter customer name'),
-                                      backgroundColor: Colors.red,
+                                    SnackBar(
+                                      content: const Text(
+                                          'Please enter customer name'),
+                                      backgroundColor: Colors.red[400],
                                     ),
                                   );
                                   return;
@@ -523,7 +540,7 @@ class _BillSummary extends StatelessWidget {
                                       SnackBar(
                                         content: const Text(
                                             'Bill generated successfully'),
-                                        backgroundColor: Colors.green[700],
+                                        backgroundColor: Colors.green[400],
                                       ),
                                     );
                                   }
@@ -533,7 +550,7 @@ class _BillSummary extends StatelessWidget {
                                       SnackBar(
                                         content:
                                             Text('Error generating bill: $e'),
-                                        backgroundColor: Colors.red[700],
+                                        backgroundColor: Colors.red[400],
                                       ),
                                     );
                                   }
@@ -541,6 +558,9 @@ class _BillSummary extends StatelessWidget {
                               },
                         icon: const Icon(Icons.receipt_long_outlined),
                         label: const Text('Generate Bill'),
+                        style: ElevatedButton.styleFrom(
+                          elevation: 0,
+                        ),
                       ),
                     ),
                   ],

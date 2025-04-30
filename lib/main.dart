@@ -19,23 +19,23 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           useMaterial3: true,
           colorScheme: ColorScheme.fromSeed(
-            seedColor: const Color(0xFF2196F3),
-            primary: const Color(0xFF2196F3),
-            secondary: const Color(0xFF26A69A),
-            tertiary: const Color(0xFF66BB6A),
-            background: const Color(0xFFF5F5F5),
+            seedColor: const Color(0xFF64B5F6), // Light Blue
+            primary: const Color(0xFF64B5F6),
+            secondary: const Color(0xFF81C784), // Light Green
+            tertiary: const Color(0xFF4FC3F7), // Lighter Blue
+            background: Colors.white,
             surface: Colors.white,
             brightness: Brightness.light,
           ),
-          scaffoldBackgroundColor: const Color(0xFFF5F5F5),
+          scaffoldBackgroundColor: Colors.white,
           appBarTheme: const AppBarTheme(
             elevation: 0,
             centerTitle: true,
-            backgroundColor: Color(0xFF2196F3),
+            backgroundColor: Color(0xFF64B5F6),
             foregroundColor: Colors.white,
             titleTextStyle: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
+              fontSize: 22,
+              fontWeight: FontWeight.w600,
               letterSpacing: 0.5,
             ),
           ),
@@ -49,9 +49,10 @@ class MyApp extends StatelessWidget {
             ),
           ),
           cardTheme: CardTheme(
-            elevation: 1,
+            elevation: 0,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
+              side: BorderSide(color: Colors.grey[200]!),
             ),
             margin: const EdgeInsets.symmetric(
               horizontal: 16,
@@ -60,7 +61,7 @@ class MyApp extends StatelessWidget {
           ),
           inputDecorationTheme: InputDecorationTheme(
             filled: true,
-            fillColor: Colors.white,
+            fillColor: Colors.grey[50],
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
               borderSide: BorderSide(color: Colors.grey[300]!),
@@ -71,18 +72,46 @@ class MyApp extends StatelessWidget {
             ),
             focusedBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
-              borderSide: const BorderSide(color: Color(0xFF2196F3), width: 2),
+              borderSide:
+                  BorderSide(color: const Color(0xFF64B5F6), width: 1.5),
             ),
             contentPadding: const EdgeInsets.symmetric(
               horizontal: 16,
               vertical: 16,
             ),
-            labelStyle: TextStyle(color: Colors.grey[700]),
-            prefixIconColor: Colors.grey[600],
+            labelStyle: TextStyle(
+              color: Colors.grey[700],
+              fontSize: 16,
+            ),
+            hintStyle: TextStyle(
+              color: Colors.grey[500],
+              fontSize: 16,
+            ),
+            prefixIconColor: const Color(0xFF64B5F6),
+          ),
+          textTheme: TextTheme(
+            titleLarge: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.w600,
+              color: Colors.grey[800],
+            ),
+            titleMedium: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w500,
+              color: Colors.grey[800],
+            ),
+            bodyLarge: TextStyle(
+              fontSize: 16,
+              color: Colors.grey[800],
+            ),
+            bodyMedium: TextStyle(
+              fontSize: 14,
+              color: Colors.grey[700],
+            ),
           ),
           elevatedButtonTheme: ElevatedButtonThemeData(
             style: ElevatedButton.styleFrom(
-              elevation: 1,
+              elevation: 0,
               padding: const EdgeInsets.symmetric(
                 horizontal: 24,
                 vertical: 12,
@@ -90,22 +119,35 @@ class MyApp extends StatelessWidget {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
-              backgroundColor: const Color(0xFF2196F3),
+              backgroundColor: const Color(0xFF64B5F6),
               foregroundColor: Colors.white,
+              textStyle: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+                letterSpacing: 0.5,
+              ),
             ),
           ),
           textButtonTheme: TextButtonThemeData(
             style: TextButton.styleFrom(
-              foregroundColor: const Color(0xFF2196F3),
+              foregroundColor: const Color(0xFF64B5F6),
               padding: const EdgeInsets.symmetric(
                 horizontal: 16,
                 vertical: 8,
               ),
+              textStyle: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+              ),
             ),
           ),
           iconTheme: const IconThemeData(
-            color: Color(0xFF2196F3),
+            color: Color(0xFF64B5F6),
             size: 24,
+          ),
+          dividerTheme: DividerThemeData(
+            color: Colors.grey[200],
+            thickness: 1,
           ),
         ),
         debugShowCheckedModeBanner: false,
